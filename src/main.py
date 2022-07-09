@@ -4,7 +4,6 @@ import conditions
 
 # import libs
 import PySimpleGUI as sg
-import tkinter
 import os
 
 
@@ -75,13 +74,10 @@ while True:
         filepath = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
         lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, values['-INPUT-']) 
         
-
         if file_len == 1:
-            window_output.update(lines_found_lst)
             window_warning.update('WARNING: the whole text file is one line long')
-        else:
-            for i in lines_found_lst:
-                window_output.update(window_output.get() + i)
+        
+        window_output.update(lines_found_lst)
 
     
     
