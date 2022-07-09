@@ -4,7 +4,7 @@ The user can choose a specific directory and provide a specific string using a G
 
 ## 🛠 Initialization & Setup
 #### Clone the repository  
-    git clone https://github.com/pedroandreou/OperatingSystems.git
+    git clone https://github.com/pedroandreou/OperatingSystems.git](https://github.com/pedroandreou/MyAgentRanSackGUI.git
 
 ## Author  
 <a href="https://www.linkedin.com/in/petrosandreou80/">
