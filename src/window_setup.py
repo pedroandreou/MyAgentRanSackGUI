@@ -7,7 +7,7 @@ def layout():
 
     first_col = [[sg.Text('Folder'), sg.In(size=(25,15), enable_events=True , key='-FOLDER-'), sg.FolderBrowse(enable_events=True , key='-BROSWER-')],
                 [sg.Text('Enter a string'), sg.InputText(enable_events=True, key='-INPUT-')],
-                [sg.Text('', size=(35, 15), key='-OUTPUT-')],
+                [sg.Listbox(values=[], enable_events=True, size=(40, 20), horizontal_scroll=True, key="-OUTPUT-")],
                 [sg.Text(''), sg.InputText(key='-WARNING-', text_color='black', background_color='red', justification='center')]]
 
     second_col = [[sg.Button('OK', pad=(80, 2), size=(5, 1)), sg.Button('Cancel', pad=(82, 2), size=(5, 1))]]

@@ -31,11 +31,16 @@ while True:
     elif event == 'OK':
         folder_path = values['-FOLDER-']
         
+        # get windows
+        window_files = window['-FILE LIST-']
+        window_output = window['-OUTPUT-']
+        window_warning = window['-WARNING-']
+
         # empty windows
         files_lst = []
-        window['-FILE LIST-'].update(files_lst)
-        window['-OUTPUT-'].update('')
-        window['-WARNING-'].update('NO WARNING')
+        window_files.update(files_lst)
+        window_output.update('')
+        window_warning.update('NO WARNING')
     
         
         # check the directory exists if it the directory was entered manually
@@ -50,31 +55,29 @@ while True:
                     
                     if conditions.check_string_exists_in_file(filepath, string) == 1:   
                         files_lst.append(filename)
-                        window['-FILE LIST-'].update(files_lst)
+                        window_files.update(files_lst)
                         no_file = False
                         
             if no_file == True:
-                window['-WARNING-'].update('WARNING: no file exists')
+                window_warning.update('WARNING: no file exists')
         else:
-            window['-WARNING-'].update('WARNING: the given directory does not exist')
+            window_warning.update('WARNING: the given directory does not exist')
             continue
                     
     elif event == '-FILE LIST-':
         
         # empty windows
-        window['-OUTPUT-'].update('')
-        window['-WARNING-'].update('NO WARNING')
+        window_output.update('')
+        window_warning.update('NO WARNING')
         
         # get lines that the given string appears in the txt file
         filepath = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
         lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, values['-INPUT-']) 
         
-        
         if file_len == 1:
-            window['-OUTPUT-'].update(lines_found_lst)
-            window['-WARNING-'].update('WARNING: the whole text file is one line long')
-        else:
-            window['-OUTPUT-'].update(*lines_found_lst)
+            window_warning.update('WARNING: the whole text file is one line long')
+        
+        window_output.update(lines_found_lst)
 
     
     
