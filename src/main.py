@@ -23,12 +23,16 @@ no_file = True
 # boolean for checking if the regular expression checkbox is ticked
 re_checkbox_flag = False
 
+# boolean for checking if the matchcase checkbox is ticked
+matchcase_checkbox_flag = False
+
 
 # event loop to process "events" and get the "values" of the inputs
 while True:
     event, values = window.read()
     
-    if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
+    # if user closes window or clicks cancel
+    if event == sg.WIN_CLOSED or event == 'Cancel':
         break
               
     elif event == 'OK':
@@ -50,6 +54,11 @@ while True:
         if os.path.isdir(folder_path) == True:
             no_file = True
 
+            if values['-MATCHCASE-'] == True:
+                matchcase_checkbox_flag = True
+            else:
+                matchcase_checkbox_flag = False
+
             if values['-RE-'] == True:
                 re_checkbox_flag = True
             else:
@@ -60,7 +69,7 @@ while True:
                     filepath = os.path.join(folder_path, filename).replace("\\","/")
                     string = values['-INPUT-']    
 
-                    if conditions.check_string_exists_in_file(filepath, string, re_checkbox_flag) == 1:
+                    if conditions.check_string_exists_in_file(filepath, string, matchcase_checkbox_flag, re_checkbox_flag) == 1:
                         files_lst.append(filename)
                         window_files.update(files_lst)
                         no_file = False
@@ -69,7 +78,7 @@ while True:
                 window_warning.update('WARNING: no file exists')
         else:
             window_warning.update('WARNING: the given directory does not exist')
-            continue
+            # continue
                     
     elif event == '-FILE LIST-':
         
@@ -78,21 +87,22 @@ while True:
         window_warning.update('NO WARNING')
 
         filepath = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
-
-        # check if the checbox is ticked and a regular expression is given
         string = values['-INPUT-']
+
+        # check if the regular expression checbox is ticked
         if values['-RE-'] == True:
+            # get lines that the given string appears in the txt file
             lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, string, re_checkbox=True)
                 
         else: 
-            # get lines that the given string appears in the txt file
             lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, string, re_checkbox=False) 
 
 
         # check if the length of the file is one line long
         if file_len == 1:
             window_warning.update('WARNING: the whole text file is one line long')
-
+        
+        # print the found lines on the output window
         window_output.update(lines_found_lst)
     
     
