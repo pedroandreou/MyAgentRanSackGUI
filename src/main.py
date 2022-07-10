@@ -35,6 +35,7 @@ while True:
         window_files = window['-FILE LIST-']
         window_output = window['-OUTPUT-']
         window_warning = window['-WARNING-']
+        window_re = window['-REINPUT-']
 
         # empty windows
         files_lst = []
@@ -69,16 +70,28 @@ while True:
         # empty windows
         window_output.update('')
         window_warning.update('NO WARNING')
-        
-        # get lines that the given string appears in the txt file
+
         filepath = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
-        lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, values['-INPUT-']) 
-        
+
+        # check if the checbox is ticked and a regular expression is given
+        re_string = values['-REINPUT-']
+        if values['-RE-'] == True and re_string is not None:
+            lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, re_string, re_checkbox=True)
+
+            if not lines_found_lst:
+                window_warning.update('WARNING: no regular expression found')
+                continue 
+                
+        else: 
+            # get lines that the given string appears in the txt file
+            lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, values['-INPUT-'], re_checkbox=False) 
+
+
+        # check if the length of the file is one line long
         if file_len == 1:
             window_warning.update('WARNING: the whole text file is one line long')
-        
-        window_output.update(lines_found_lst)
 
+        window_output.update(lines_found_lst)
     
     
 window.close()
