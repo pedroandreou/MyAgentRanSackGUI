@@ -20,6 +20,9 @@ lines_found_lst = []
 # boolean for checking if there is no file in the given dir
 no_file = True
 
+# boolean for checking if the regular expression checkbox is ticked
+re_checkbox_flag = False
+
 
 # event loop to process "events" and get the "values" of the inputs
 while True:
@@ -35,7 +38,6 @@ while True:
         window_files = window['-FILE LIST-']
         window_output = window['-OUTPUT-']
         window_warning = window['-WARNING-']
-        window_re = window['-REINPUT-']
 
         # empty windows
         files_lst = []
@@ -46,19 +48,23 @@ while True:
         
         # check the directory exists if it the directory was entered manually
         if os.path.isdir(folder_path) == True:
-            
             no_file = True
+
+            if values['-RE-'] == True:
+                re_checkbox_flag = True
+            else:
+                re_checkbox_flag = False
             
             for filename in os.listdir(folder_path):
                 if filename.endswith(".txt"): 
                     filepath = os.path.join(folder_path, filename).replace("\\","/")
                     string = values['-INPUT-']    
-                    
-                    if conditions.check_string_exists_in_file(filepath, string) == 1:   
+
+                    if conditions.check_string_exists_in_file(filepath, string, re_checkbox_flag) == 1:
                         files_lst.append(filename)
                         window_files.update(files_lst)
                         no_file = False
-                        
+
             if no_file == True:
                 window_warning.update('WARNING: no file exists')
         else:
@@ -74,17 +80,13 @@ while True:
         filepath = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
 
         # check if the checbox is ticked and a regular expression is given
-        re_string = values['-REINPUT-']
-        if values['-RE-'] == True and re_string is not None:
-            lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, re_string, re_checkbox=True)
-
-            if not lines_found_lst:
-                window_warning.update('WARNING: no regular expression found')
-                continue 
+        string = values['-INPUT-']
+        if values['-RE-'] == True:
+            lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, string, re_checkbox=True)
                 
         else: 
             # get lines that the given string appears in the txt file
-            lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, values['-INPUT-'], re_checkbox=False) 
+            lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, string, re_checkbox=False) 
 
 
         # check if the length of the file is one line long

@@ -1,13 +1,20 @@
 import re
 
 
-def check_string_exists_in_file(filepath, text):
+def check_string_exists_in_file(filepath, text, re_checkbox=False):
     
-    file = open(filepath, "r") 
+    file = open(filepath, "r")
+
+    file_read = ''
+    counter = 0
     
-    file_read = file.read().casefold()
     
-    counter = file_read.count(text.casefold())
+    if re_checkbox == False:
+        file_read = file.read().casefold()
+        counter = file_read.count(text.casefold())
+    else:
+        file_read = file.read()
+        counter = len(re.findall(text, file_read))
 
     if counter >= 1:
         return 1
@@ -27,9 +34,9 @@ def get_lines_the_given_string_appears(filepath, text, re_checkbox=False):
 
 
     if re_checkbox == False:
-
         for line in lines:
             counter += 1
+
             if text.casefold() in line.casefold():
                 new_list.append(f"Line {counter}: {line}")
     else:
