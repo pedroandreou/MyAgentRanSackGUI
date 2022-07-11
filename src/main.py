@@ -7,6 +7,22 @@ import PySimpleGUI as sg
 import os
 
 
+def checkboxes_flags(matchcase_flag, re_flag):
+    
+    if matchcase_flag == True:
+        matchcase_flag = True
+    else:
+        matchcase_flag = False
+
+    if re_flag == True:
+        re_flag = True
+    else:
+        re_flag = False
+
+
+    return matchcase_flag, re_flag
+
+
 # create the Window
 window = sg.Window('Search for a string in a specific directory', window_setup.layout(), background_color='black', finalize=True)
 
@@ -54,15 +70,7 @@ while True:
         if os.path.isdir(folder_path) == True:
             no_file = True
 
-            if values['-MATCHCASE-'] == True:
-                matchcase_checkbox_flag = True
-            else:
-                matchcase_checkbox_flag = False
-
-            if values['-RE-'] == True:
-                re_checkbox_flag = True
-            else:
-                re_checkbox_flag = False
+            matchcase_checkbox_flag, re_checkbox_flag = checkboxes_flags(values['-MATCHCASE-'], values['-RE-'])
             
             for filename in os.listdir(folder_path):
                 if filename.endswith(".txt"): 
@@ -89,13 +97,11 @@ while True:
         filepath = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
         string = values['-INPUT-']
 
-        # check if the regular expression checbox is ticked
-        if values['-RE-'] == True:
-            # get lines that the given string appears in the txt file
-            lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, string, re_checkbox=True)
-                
-        else: 
-            lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, string, re_checkbox=False) 
+        matchcase_checkbox_flag, re_checkbox_flag = checkboxes_flags(values['-MATCHCASE-'], values['-RE-'])
+
+
+        # get lines that the given string appears in the txt file
+        lines_found_lst, file_len = conditions.get_lines_the_given_string_appears(filepath, string, matchcase_checkbox_flag, re_checkbox_flag) 
 
 
         # check if the length of the file is one line long
