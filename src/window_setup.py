@@ -1,13 +1,12 @@
 import PySimpleGUI as sg
 
 def make_win1():
-    # add a touch of color
     sg.theme('DarkAmber')
 
     first_col = [[sg.Text('Folder'), sg.In(size=(25,15), enable_events=True , key='-FOLDER-'), sg.FolderBrowse(enable_events=True , key='-BROSWER-')],
                 [sg.Text('Enter a string'), sg.InputText(enable_events=True, key='-INPUT-'), sg.Button("...")],
                 [sg.Listbox(values=[], enable_events=True, size=(40, 20), key="-FILE LIST-")],
-                [sg.Text(''), sg.InputText(key='-WARNING-', size=(50, 1), text_color='black', background_color='red', justification='center')]]
+                [sg.Text(''), sg.InputText(size=(50, 1), text_color='black', justification='center', default_text='NO WARNING', disabled=True, key='-WARNING-')]]
 
     second_col = [[sg.Button('OK', pad=(96, 2), size=(5, 1)), sg.Button('Cancel', pad=(98, 2), size=(5, 1))]]
 
