@@ -7,23 +7,19 @@ import PySimpleGUI as sg
 import os
 
 
-# start off with 1 window open
-window1, window2 = window_setup.make_win1(), None
-
-
 files_lst = []                  # list to append the files that contain the given string
 lines_found_lst = []            # create list to append the lines that the given string appears in a specific txt file
 no_file = True                  # boolean for checking if there is no file in the given dir
 matchcase_checkbox_flag = False # boolean for checking if the matchcase checkbox is ticked
 re_checkbox_flag = False        # boolean for checking if the regular expression checkbox is ticked
 
+# start off with 1 window open
+window1, window2 = window_setup.make_win1(), None
+
 
 # event loop 
 while True:
     window, event, values = sg.read_all_windows()
-
-    # get values of the second window
-    second_window_vals = {}
     
     # if user closes window or clicks cancel
     if event == sg.WIN_CLOSED or event == 'Cancel':

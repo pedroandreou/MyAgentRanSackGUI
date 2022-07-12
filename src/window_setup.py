@@ -7,9 +7,9 @@ def make_win1():
     first_col = [[sg.Text('Folder'), sg.In(size=(25,15), enable_events=True , key='-FOLDER-'), sg.FolderBrowse(enable_events=True , key='-BROSWER-')],
                 [sg.Text('Enter a string'), sg.InputText(enable_events=True, key='-INPUT-'), sg.Button("...")],
                 [sg.Listbox(values=[], enable_events=True, size=(40, 20), key="-FILE LIST-")],
-                [sg.Text(''), sg.InputText(key='-WARNING-', text_color='black', background_color='red', justification='center')]]
+                [sg.Text(''), sg.InputText(key='-WARNING-', size=(50, 1), text_color='black', background_color='red', justification='center')]]
 
-    second_col = [[sg.Button('OK', pad=(110, 2), size=(5, 1)), sg.Button('Cancel', pad=(116, 2), size=(5, 1))]]
+    second_col = [[sg.Button('OK', pad=(96, 2), size=(5, 1)), sg.Button('Cancel', pad=(98, 2), size=(5, 1))]]
 
     third_col = [[sg.Listbox(values=[], enable_events=True, size=(50, 20), horizontal_scroll=True, key="-OUTPUT-")]]
 

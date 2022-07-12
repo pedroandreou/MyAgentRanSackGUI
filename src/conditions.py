@@ -1,14 +1,16 @@
 import re
 
 
+#################### check string ####################
 def check_string_with_no_pattern(file, text, casefold):
 
     if casefold == True:
         file_read = file.read().casefold()
-        counter = file_read.count(text.casefold())
+        text = text.casefold()
     else:
         file_read = file.read()
-        counter = file_read.count(text)
+
+    counter = file_read.split().count(text)
 
 
     return counter
@@ -18,59 +20,14 @@ def check_string_with_pattern(file, text, casefold):
 
     if casefold == True:
         file_read = file.read().casefold()
-        counter = len(re.findall(text.casefold(), file_read))
+        text = text.casefold()
     else:
         file_read = file.read()
-        counter = len(re.findall(text, file_read))
+        
+    counter = len(re.findall(text, file_read))
 
 
     return counter
-
-
-def get_lines_with_no_pattern(text, lines, casefold):
-        
-    new_list = []
-    counter = 0
-
-    if casefold == True:
-        for line in lines:
-            counter += 1
-
-            if text.casefold() in line.casefold():
-                new_list.append(f"Line {counter}: {line}")
-    else:
-        for line in lines:
-            counter += 1
-
-            if text in line:
-                new_list.append(f"Line {counter}: {line}")
-    
-
-    return new_list
-
-
-def get_lines_with__pattern(text, lines, casefold):
-        
-    new_list = []
-    counter = 0
-
-    if casefold == True:
-        for line in lines:
-            counter += 1
-
-            pattern_exists = re.search(text.casefold(), line.casefold())
-            if pattern_exists:
-                new_list.append(f"Line {counter}: {line}")
-    else:
-        for line in lines:
-            counter += 1
-
-            pattern_exists = re.search(text, line)
-            if pattern_exists:
-                new_list.append(f"Line {counter}: {line}")
-    
-
-    return new_list
 
 
 def check_string_exists_in_file(filepath, text, matchcase_checkbox=False, re_checkbox=False):
@@ -101,6 +58,53 @@ def check_string_exists_in_file(filepath, text, matchcase_checkbox=False, re_che
     
     
     return 0
+
+
+#################### get lines ####################
+def get_lines_with_no_pattern(text, lines, casefold):
+        
+    new_list = []
+    counter = 0
+
+    if casefold == True:
+        for line in lines:
+            counter += 1
+
+            if text.casefold() in line.casefold().split():
+                new_list.append(f"Line {counter}: {line}")
+    else:
+        for line in lines:
+            counter += 1
+
+            if text in line.split():
+                new_list.append(f"Line {counter}: {line}")
+    
+
+    return new_list
+
+
+def get_lines_with__pattern(text, lines, casefold):
+        
+    new_list = []
+    counter = 0
+
+    if casefold == True:
+        for line in lines:
+            counter += 1
+
+            pattern_exists = re.search(text.casefold(), line.casefold())
+            if pattern_exists:
+                new_list.append(f"Line {counter}: {line}")
+    else:
+        for line in lines:
+            counter += 1
+
+            pattern_exists = re.search(text, line)
+            if pattern_exists:
+                new_list.append(f"Line {counter}: {line}")
+    
+
+    return new_list
 
 
 def get_lines_the_given_string_appears(filepath, text, matchcase_checkbox=False, re_checkbox=False):
