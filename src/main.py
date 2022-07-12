@@ -86,6 +86,9 @@ while True:
                 window_warning.update('WARNING: the given directory does not exist')
                         
         elif event == '-FILE LIST-':
+            window_output.update('')
+            window_warning.update('NO WARNING')
+            
 
             filepath = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
             string = values['-INPUT-']
