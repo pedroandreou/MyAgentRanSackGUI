@@ -7,50 +7,41 @@ import PySimpleGUI as sg
 import os
 
 
-def checkboxes_flags(matchcase_flag, re_flag):
-    
-    if matchcase_flag == True:
-        matchcase_flag = True
-    else:
-        matchcase_flag = False
-
-    if re_flag == True:
-        re_flag = True
-    else:
-        re_flag = False
+# start off with 1 window open
+window1, window2 = window_setup.make_win1(), None
 
 
-    return matchcase_flag, re_flag
+files_lst = []                  # list to append the files that contain the given string
+lines_found_lst = []            # create list to append the lines that the given string appears in a specific txt file
+no_file = True                  # boolean for checking if there is no file in the given dir
+matchcase_checkbox_flag = False # boolean for checking if the matchcase checkbox is ticked
+re_checkbox_flag = False        # boolean for checking if the regular expression checkbox is ticked
 
 
-# create the Window
-window = sg.Window('Search for a string in a specific directory', window_setup.layout(), background_color='black', finalize=True)
-
-
-# list to append the files that contain the given string
-files_lst = []
-
-# create list to append the lines that the given string appears in a specific txt file
-lines_found_lst = []
-
-# boolean for checking if there is no file in the given dir
-no_file = True
-
-# boolean for checking if the regular expression checkbox is ticked
-re_checkbox_flag = False
-
-# boolean for checking if the matchcase checkbox is ticked
-matchcase_checkbox_flag = False
-
-
-# event loop to process "events" and get the "values" of the inputs
+# event loop 
 while True:
-    event, values = window.read()
+    window, event, values = sg.read_all_windows()
+
+    # get values of the second window
+    second_window_vals = {}
     
     # if user closes window or clicks cancel
     if event == sg.WIN_CLOSED or event == 'Cancel':
-        break
-              
+        window.close()
+        if window == window2:       # if closing win 2, mark as closed
+            window2 = None
+        elif window == window1:     # if closing win 1, exit program
+            break
+    
+    elif event == '...' and not window2:
+        window2 = window_setup.make_win2()
+    
+    elif event == '-MATCHCASE-':
+        matchcase_checkbox_flag = values['-MATCHCASE-']
+
+    elif event == '-RE-':
+        re_checkbox_flag = values['-RE-']
+
     elif event == 'OK':
         folder_path = values['-FOLDER-']
         
@@ -69,8 +60,6 @@ while True:
         # check the directory exists if it the directory was entered manually
         if os.path.isdir(folder_path) == True:
             no_file = True
-
-            matchcase_checkbox_flag, re_checkbox_flag = checkboxes_flags(values['-MATCHCASE-'], values['-RE-'])
             
             for filename in os.listdir(folder_path):
                 if filename.endswith(".txt"): 
@@ -96,8 +85,6 @@ while True:
 
         filepath = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
         string = values['-INPUT-']
-
-        matchcase_checkbox_flag, re_checkbox_flag = checkboxes_flags(values['-MATCHCASE-'], values['-RE-'])
 
 
         # get lines that the given string appears in the txt file

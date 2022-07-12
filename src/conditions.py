@@ -11,7 +11,7 @@ def check_string_with_no_pattern(file, text, casefold):
         counter = file_read.count(text)
 
 
-    return file_read, counter
+    return counter
 
 
 def check_string_with_pattern(file, text, casefold):
@@ -24,7 +24,7 @@ def check_string_with_pattern(file, text, casefold):
         counter = len(re.findall(text, file_read))
 
 
-    return file_read, counter
+    return counter
 
 
 def get_lines_with_no_pattern(text, lines, casefold):

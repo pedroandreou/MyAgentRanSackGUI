@@ -1,13 +1,12 @@
 import PySimpleGUI as sg
 
-
-def layout():
+def make_win1():
     # add a touch of color
     sg.theme('DarkAmber')
 
     first_col = [[sg.Text('Folder'), sg.In(size=(25,15), enable_events=True , key='-FOLDER-'), sg.FolderBrowse(enable_events=True , key='-BROSWER-')],
-                [sg.Text('Enter a string'), sg.InputText(enable_events=True, key='-INPUT-')],
-                [sg.Listbox(values=[], enable_events=True, size=(40, 20), key="-FILE LIST-"), sg.Checkbox('Match case', size = (10, 5), default=False, key='-MATCHCASE-'), sg.Checkbox('Regular expression', size = (20, 5), default=False, key='-RE-')],
+                [sg.Text('Enter a string'), sg.InputText(enable_events=True, key='-INPUT-'), sg.Button("...")],
+                [sg.Listbox(values=[], enable_events=True, size=(40, 20), key="-FILE LIST-")],
                 [sg.Text(''), sg.InputText(key='-WARNING-', text_color='black', background_color='red', justification='center')]]
 
     second_col = [[sg.Button('OK', pad=(110, 2), size=(5, 1)), sg.Button('Cancel', pad=(116, 2), size=(5, 1))]]
@@ -30,4 +29,12 @@ def layout():
                 [sg.Push(), layout_frame, sg.Push()]
             ]
 
-    return layout
+
+    return sg.Window('Search for a string in a specific directory', layout, background_color='black', finalize=True)
+
+
+def make_win2():
+    layout = [[sg.Checkbox('Match case', enable_events=True, size = (10, 5), default=False, key='-MATCHCASE-'), sg.Checkbox('Regular expression', enable_events=True, size = (20, 5), default=False, key='-RE-')]]
+
+
+    return sg.Window('Settings Window', layout, background_color='black', finalize=True)
