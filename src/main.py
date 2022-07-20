@@ -15,7 +15,7 @@ matchcase_checkbox_flag = False # boolean for checking if the matchcase checkbox
 re_checkbox_flag = False        # boolean for checking if the regular expression checkbox is ticked
 files_lst_window = False        # boolean for checking if the files list window is filled so it can be pressed
 
-# start off with 1 window open
+# start off with 1 window opens
 window1, window2 = window_setup.make_win1(), None
 
 

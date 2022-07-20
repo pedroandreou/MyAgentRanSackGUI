@@ -24,7 +24,7 @@ def check_string_with_pattern(file, text, casefold):
     else:
         file_read = file.read()
         
-    counter = len(re.findall(text, file_read))
+    counter = len(re.findall("^" + text + "$", file_read))
 
 
     return counter
@@ -121,7 +121,7 @@ def get_lines_the_given_string_appears(filepath, text, matchcase_checkbox=False,
             new_list = get_lines_with_no_pattern(text, lines, casefold=True)
         # pattern given
         else:
-            new_list = get_lines_with__pattern(text, lines, casefold=True)
+            new_list = get_lines_with__pattern("^" + text + "$", lines, casefold=True)
     # case-sensitive
     else:
         # no pattern given
@@ -129,7 +129,7 @@ def get_lines_the_given_string_appears(filepath, text, matchcase_checkbox=False,
             new_list = get_lines_with_no_pattern(text, lines, casefold=False)
         # pattern given
         else:
-            new_list = get_lines_with__pattern(text, lines, casefold=False)
+            new_list = get_lines_with__pattern("^" + text + "$", lines, casefold=False)
 
 
     file_read.close()
