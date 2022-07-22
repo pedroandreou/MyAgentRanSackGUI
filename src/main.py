@@ -1,19 +1,21 @@
 # import files
 import window_setup
-from conditions import check_string_exists_in_file as check_string_exists_in_file
-from conditions import get_lines_the_given_string_appears as get_lines_the_given_string_appears
+from check_string import check_string_exists_in_file as check_string_exists_in_file
+from get_lines import get_lines_the_given_string_appears as get_lines_the_given_string_appears
 
 # import libs
 import PySimpleGUI as sg
 import os
+import re
 
 
 files_lst = []                  # list to append the files that contain the given string
 lines_found_lst = []            # create list to append the lines that the given string appears in a specific txt file
-no_file = True                  # boolean for checking if there is no file in the given dir
-matchcase_checkbox_flag = False # boolean for checking if the matchcase checkbox is ticked
-re_checkbox_flag = False        # boolean for checking if the regular expression checkbox is ticked
-files_lst_window = False        # boolean for checking if the files list window is filled so it can be pressed
+no_file = True                  # check if there is no file in the given dir
+matchcase_checkbox_flag = False # check if the matchcase checkbox is ticked
+re_checkbox_flag = False        # check if the regular expression checkbox is ticked
+files_lst_window = False        # check if the files list window is filled so it can be pressed
+is_valid = True                 # check if the regular expression is valid
 
 # start off with 1 window opens
 window1, window2 = window_setup.make_win1(), None
@@ -35,10 +37,10 @@ while True:
         window2 = window_setup.make_win2()
     
     elif event == '-MATCHCASE-':
-        matchcase_checkbox_flag = values['-MATCHCASE-']
+        matchcase_checkbox_flag = True
 
     elif event == '-RE-':
-        re_checkbox_flag = values['-RE-']
+        re_checkbox_flag = True
 
     elif event == 'OK':
         
@@ -54,7 +56,7 @@ while True:
         window_warning.update('NO WARNING')
 
         folder_path = values['-FOLDER-']
-        string = values['-INPUT-']  
+        string = values['-INPUT-']
 
         if not folder_path and not string:
             window_warning.update('WARNING: no directory and string provided')
@@ -64,6 +66,19 @@ while True:
             continue
         elif not folder_path:
             window_warning.update('WARNING: no directory provided')
+            continue
+
+        # check if the regular expression is valid if regular expression box is ticked
+        is_valid = True
+
+        if re_checkbox_flag == True:
+            try:
+                re.compile(string)
+            except re.error:
+                window_warning.update('WARNING: give a valid regular expression')
+                is_valid = False
+
+        if is_valid == False:
             continue
     
         
@@ -75,7 +90,13 @@ while True:
                 if filename.endswith(".txt"): 
                     filepath = os.path.join(folder_path, filename).replace("\\","/") 
 
-                    if check_string_exists_in_file(filepath, string, matchcase_checkbox_flag, re_checkbox_flag) == 1:
+                    # check if the string is given as regular expression and has ^ and $ as its first and last character => remove them
+                    if re_checkbox_flag == True:
+                        if string.startswith('^') and string.endswith('$'):
+                            string = string[1:-1]
+
+
+                    if check_string_exists_in_file(filepath, string, matchcase_checkbox_flag, re_checkbox_flag) == True:
                         files_lst.append(filename)
                         window_files.update(files_lst)
                         no_file = False
